@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>pandora_tld</name>
+  <version>0.1.0</version>
+  <description>The predator node</description>
+
+
+  <maintainer email="elendorial@gmail.com">Victor Daropoulos</maintainer>
+
+  <license>TODO</license>
+
+  <url type="bugtracker">https://github.com/pandora-auth-ros-pkg/pandora_vision/issues</url>
+  <url type="repository">https://github.com/pandora-auth-ros-pkg/pandora_vision</url>
+
+  <author>Victor Daropoulos</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>open_tld</depend>
+
+
+</package>

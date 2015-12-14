@@ -1,0 +1,2 @@
+predator_alert : /vision/predator_alert
+input_image_topic: /camera/image

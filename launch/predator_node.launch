@@ -1,0 +1,13 @@
+<launch>
+  <arg name="name" default="predator_node"/>
+ 
+  <node name="$(arg name)" type="predator_node" pkg="pandora_tld" 
+      respawn="False" output="screen" />
+  
+  <rosparam file="$(find pandora_tld)/config/predator_topics.yaml" 
+        command="load" ns="predator"/>
+        
+  <rosparam file="$(find pandora_tld)/config/predator_params.yaml" 
+        command="load" ns="predator"/>
+        
+</launch>
