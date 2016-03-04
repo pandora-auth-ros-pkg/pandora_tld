@@ -147,7 +147,6 @@ namespace pandora_vision
   **/
   void Predator::imageCallback(const sensor_msgs::ImageConstPtr& msg)
   {
-    ROS_INFO_STREAM("AAAA");
     double start = static_cast<double>(cv::getTickCount());
     framecounter++;
     double fps;
@@ -196,7 +195,6 @@ namespace pandora_vision
       else
       {
         cv::Rect temp = cv::Rect(0, 0, 0, 0);
-        sendMessage(temp, 0, msg);
       }
     }
 
@@ -524,43 +522,18 @@ namespace pandora_vision
   void Predator::sendMessage(const cv::Rect& rec, const float& posterior,
       const sensor_msgs::ImageConstPtr& frame)
   {
-    //if ( operation_state == true)
-    //{
-      //pandora_vision_msgs::Predator predatorLandoltcMsg;
-      //predatorLandoltcMsg.header.frame_id = _frame_ids_map.find(_frame_id)->second;
-      //predatorLandoltcMsg.header.stamp = PredatorFrameTimeStamp;
-      //predatorLandoltcMsg.regionOfInterest.center.x = rec.x;
-      //predatorLandoltcMsg.regionOfInterest.center.y = rec.y;
-      //predatorLandoltcMsg.regionOfInterest.width = rec.width;
-      //predatorLandoltcMsg.regionOfInterest.height = rec.height;
-      //predatorLandoltcMsg.posterior = posterior;
-      //predatorLandoltcMsg.image = *frame;
+    geometry_msgs::Polygon send_msg;
+    geometry_msgs::Point32 point;
 
-      //_landoltc3dPredatorPublisher.publish(predatorLandoltcMsg);
-    //}
-    //else
-    //{
-      //pandora_common_msgs::GeneralAlert predatorAlertMsg;
+    point.x = rec.x;
+    point.y = rec.y;
+    send_msg.points.push_back(point);
 
-      //if (posterior != 0)
-      //{
-        //predatorAlertMsg.header.frame_id = _frame_ids_map.find(_frame_id)->second;
-        //predatorAlertMsg.header.stamp = PredatorFrameTimeStamp;
-        //predatorAlertMsg.info.probability = posterior;
-        //int center_x = rec.x + rec.width / 2;
-        //int center_y = rec.y + rec.height / 2;
+    point.x = rec.width;
+    point.y = rec.height;
+    send_msg.points.push_back(point);
 
-        //float x = center_x
-          //- static_cast<float>(frameWidth) / 2;
-        //float y = static_cast<float>(frameHeight) / 2
-          //- center_y;
-
-        //predatorAlertMsg.info.yaw = atan(2 * x / frameWidth * tan(hfov / 2));
-        //predatorAlertMsg.info.pitch = atan(2 * y / frameHeight * tan(vfov / 2));
-
-        //_predatorPublisher.publish(predatorAlertMsg);
-      //}
-    //}
+    _predatorPublisher.publish(send_msg);
   }
 
   /**
