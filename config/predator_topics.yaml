@@ -1,2 +1,3 @@
 predator_alert : /vision/predator_alert
-input_image_topic: /camera/image
+input_image_topic: /camera/rgb/image_raw
+begin_hunt_topic: /predator/hunt

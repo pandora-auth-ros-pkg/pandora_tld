@@ -73,6 +73,9 @@ namespace pandora_vision
       
       //!<Predator Publisher
       ros::Publisher _predatorPublisher;
+
+      //!< ROS service to initiate hunting
+      ros::Subscriber _predatorHuntRectangle;
       
       //!< Current frame to be processed
       cv::Mat PredatorFrame;
@@ -85,6 +88,7 @@ namespace pandora_vision
       
       //!< The topic subscribed to for the front camera
       std::string imageTopic;
+      std::string predatorHuntTopic;
       
       //!< Frame height
       int frameHeight;
@@ -137,6 +141,8 @@ namespace pandora_vision
       @return void
       **/
       void imageCallback(const sensor_msgs::ImageConstPtr& msg);
+      
+      void predatorHuntRectangleCallback(const geometry_msgs::PolygonPtr& msg);
      
       DetectorCascadeParams detectorCascadeParams;
       
@@ -184,7 +190,8 @@ namespace pandora_vision
       @param posterior [const float&] Confidence
       @return void
       **/
-      void sendMessage(const cv::Rect& rec, const float& posterior, const sensor_msgs::ImageConstPtr& frame);
+      void sendMessage(const cv::Rect& rec, const float& posterior, 
+        const sensor_msgs::ImageConstPtr& frame);
 
       /**
       @brief Default Destructor
@@ -193,7 +200,6 @@ namespace pandora_vision
       ~Predator();
 
       std::string param;
-    
   };
 }  // namespace pandora_vision
 

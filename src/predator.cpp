@@ -82,6 +82,8 @@ namespace pandora_vision
     detectorCascade->nnClassifier->thetaFP = detectorCascadeParams.theta_FP;
     
     _inputImageSubscriber = _nh.subscribe(imageTopic, 1, &Predator::imageCallback, this);
+    _predatorHuntRectangle = _nh.subscribe(predatorHuntTopic, 1, 
+      &Predator::predatorHuntRectangleCallback, this);
   }
 
   /**
@@ -140,6 +142,26 @@ namespace pandora_vision
     }
   }
 
+  void Predator::predatorHuntRectangleCallback(const geometry_msgs::PolygonPtr& msg)
+  {
+    if(msg->points.size() != 2){
+      ROS_ERROR("Must give 2 points: [x,y][width,height]");
+    }
+    bbox = cv::Rect(
+      msg->points[0].x,
+      msg->points[0].y, 
+      msg->points[1].x,
+      msg->points[1].y); // x,y,width,height
+
+    if (bbox.x == -1 || bbox.y == -1 || bbox.width == -1 || bbox.height == -1)
+    {
+      ROS_INFO("Invalid bounding box given.");
+    }
+    else
+    {
+      tld->selectObject(grey, &bbox);
+    }
+  }
   /**
   @brief Callback for the RGB Image
   @param msg [const sensor_msgs::ImageConstPtr& msg] The RGB Image
@@ -369,6 +391,13 @@ namespace pandora_vision
     else
     {
       ROS_FATAL("[predator_node] : Imagetopic name not found");
+      ROS_BREAK();
+    }
+    if (_nh.getParam("predator/begin_hunt_topic", predatorHuntTopic))
+      ROS_DEBUG_STREAM("predatorHuntTopic : " << predatorHuntTopic);
+    else
+    {
+      ROS_FATAL("[predator_node] : Predator hunt topic name not found");
       ROS_BREAK();
     }
 
